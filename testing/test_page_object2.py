@@ -2,24 +2,31 @@ from selenium import webdriver
 
 
 class One:
-    @classmethod
-    def __init__(cls):
-        cls._dr = webdriver.Chrome()
+    def __init__(self):
+        if not hasattr(One, 'dr'):
+            One.dr = webdriver.Chrome()
+
+    def quit(self):
+        self.dr.quit()
+        delattr(One, 'dr')
 
 
 class Two(One):
-    def __init__(self):
-        self._dr = One()._dr
-
     def click(self):
         return Three()
 
 
 class Three(One):
-    def __init__(self):
-        self._dr = One()._dr
+    pass
 
 
 if __name__ == "__main__":
     index = Two()
     contact = index.click()
+    contact.click()
+    contact.quit()
+    print("Case 1 is done.")
+    index2 = Two()
+    print('yes')
+    index2.click()
+    index2.quit()
